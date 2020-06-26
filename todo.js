@@ -1,88 +1,113 @@
-// We'll pre-populate this array with a couple objects just so it's not undefined if your internet connection isn't working properly.
+let arrayOfTodos = [""]
 
-let arrayOfTodos = [];
-let todoUserID = 0;
+   const fetchTodos = () => {
+     fetch('https://jsonplaceholder.typicode.com/todos')
+     .then( (response) => response.json())
+     .then( (json) => arrayOfTodos = json)
+   }
 
-const fetchTodos = () => {
-    fetch('https://jsonplaceholder.typicode.com/todos/')
-    .then( (response) => response.json())
-    .then( (json) => arrayOfTodos = json)
-}
+   const logTodos = () => {
+     console.log(arrayOfTodos)
+   }
 
-const logTodos = () => {
-    console.log(arrayOfTodos)
-    //document.getElementById("len").innerHTML = arrayOfTodos.length;
+   const populateTodos = () => {
 
-}
+    resetToDos();
 
-const populateTodos = () => {
-    /*Start with getting just the first item and its title property.*/
+        let todoComplete = '';
+        let title = '';
+        for (i=0; i < arrayOfTodos.length; i++) {
+            let todoList = document.getElementById('todo-list');
+            let todoItem = document.createElement("LI");
+            todoTitle = document.createTextNode(arrayOfTodos[i].title);
+            todoItem.appendChild(todoTitle);
+            todoList.appendChild(todoItem);
 
-    //Then capture the ol item into a variable (getElementById)
-    let todoList = document.getElementById('todo-list');
-
-    //createText inside the li using the title property.
-    let todoTitle = "";
-    let todoComplete = "";
-    
-
-    for (i=0; i < arrayOfTodos.length; i++) {
-        todoTitle = document.createTextNode(arrayOfTodos[i].title);
-        
-        //createElement to make a new LI
-        let todoItem = document.createElement("LI");
             if (arrayOfTodos[i].completed) {
-                // add a class to the li to make text red
-                todoItem.classList.add("istrue");
-            } else {
-                todoItem.classList.add("isfalse");
-            }
-
-        //Now append the text to the new element
-        todoItem.appendChild(todoTitle);
-
-        //Then append the element to the ol element.
-        todoList.appendChild(todoItem);
-
-        //Put all of that inside your populateTodos function. 
-    } // end of for loop
+              todoItem.classList.add('false');
+            } else todoItem.classList.add('true')
     
-} // end of function
+        }
 
-const filterList = arrayOfTodos.filter(item => item.userID === todoUserID)
+        document.getElementById("myText").innerHTML = arrayOfTodos.length;
 
-const populateFilteredTodos = () => {
-    /*Start with getting just the first item and its title property.*/
+        console.log("Thank you for teaching us cool stuff!")
+             
+   };
 
-    //Then capture the ol item into a variable (getElementById)
-    let todoList = document.getElementById('todo-list');
-
-    //createText inside the li using the title property.
-    let todoTitle = "";
-    let todoComplete = "";
-    let todoUserID = 0;
-
-    for (i=0; i < filterList.length; i++) {
-        todoTitle = document.createTextNode(filterList[i].title);
-        
-        //createElement to make a new LI
+  const completedTodos = () => {
+    resetToDos();
+    let todoComplete = '';
+    let title = '';
+    for (i=0; i < arrayOfTodos.length; i++) {
+        let todoList = document.getElementById('todo-list');
         let todoItem = document.createElement("LI");
-            if (filterList[i].completed) {
-                // add a class to the li to make text red
-                todoItem.classList.add("istrue");
-            } else {
-                todoItem.classList.add("isfalse");
-            }
-
-        //Now append the text to the new element
+        todoTitle = document.createTextNode(arrayOfTodos[i].title);
         todoItem.appendChild(todoTitle);
-
-        //Then append the element to the ol element.
         todoList.appendChild(todoItem);
 
-        //Put all of that inside your populateTodos function. 
-    } // end of for loop
+        if (arrayOfTodos[i].completed) {
+          todoItem.classList.add('invisible');
+        } else todoItem.classList.add('true')
 
- //console.log(arrayOfTodos[100].title) // => 14
- //console.log(arrayOfTodos[150].title) // => 20
-}
+    }
+         
+};
+
+  const incompletedTodos = () => {
+    resetToDos();
+    let todoComplete = '';
+    let title = '';
+    for (i=0; i < arrayOfTodos.length; i++) {
+        let todoList = document.getElementById('todo-list');
+        let todoItem = document.createElement("LI");
+        todoTitle = document.createTextNode(arrayOfTodos[i].title);
+        todoItem.appendChild(todoTitle);
+        todoList.appendChild(todoItem);
+
+        if (arrayOfTodos[i].completed) {
+          todoItem.classList.add('false');
+        } else todoItem.classList.add('invisible')
+
+    }
+
+};
+
+
+function resetToDos () {
+  const listStuff = document.querySelector('[data-lists]')
+  while (listStuff.firstChild) {
+    listStuff.removeChild(listStuff.firstChild)
+  }
+
+  
+};
+
+
+function selectedTodos () {
+
+  resetToDos ()
+
+  const numberInput = document.getElementById('myNumber').value;
+  //console.log(numberInput);
+
+  let todoComplete = '';
+  let title = '';
+  let userID = '';
+  // for (i=0; i < arrayOfTodos.length; i++) {
+      let todoList = document.getElementById('todo-list');
+      let todoItem = document.createElement("LI");
+      todoTitle = document.createTextNode(arrayOfTodos[numberInput].title);
+      todoItem.appendChild(todoTitle);
+      todoList.appendChild(todoItem);
+
+      if (arrayOfTodos[numberInput].userID) {
+        todoItem.classList.add('invisible');
+      } else todoItem.classList.add('filterNumber', 'animate_animated');
+
+
+  document.getElementById("myText").innerHTML = arrayOfTodos.length;
+
+  console.log("Thank you for teaching us cool stuff!")
+       
+};
